@@ -1,0 +1,5 @@
+package: github.com/jnst/go-web
+import:
+- package: github.com/labstack/echo
+  subpackages:
+  - engine/standard
