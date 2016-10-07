@@ -10,6 +10,7 @@ insert_final_newline = true
 
 [{*.go,Makefile}]
 indent_style = tab
+indent_size = 4
 
 [*.md]
 trim_trailing_whitespace = false
