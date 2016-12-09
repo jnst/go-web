@@ -1,0 +1,7 @@
+syntax = "proto2";
+
+package rpc;
+
+message GachaRequest {
+  required int32 gacha_id = 1;
+}

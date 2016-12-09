@@ -1,0 +1,8 @@
+syntax = "proto2";
+
+import "card.proto";
+package rpc;
+
+message GachaResponse {
+  repeated Card cards = 1;
+}
