@@ -35,19 +35,12 @@ func RPCHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatalln(err.Error())
 	}
 
+	w.Header().Set("Content-Type", "application/octet-stream")
+
 	// TODO: replace to middleware
 	log.Printf("%v", gachaResp)
 
 	w.Write(data)
-}
-
-// NotFoundHandler handles 404 Not Found.
-func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
-	// TODO: replace to middleware
-	log.Printf("started %s \"%s\" for %s", r.Method, r.RequestURI, r.RemoteAddr)
-	log.Printf("%v", r.Header)
-
-	http.NotFound(w, r)
 }
 
 func createResponse() *pb.GachaResponse {
@@ -83,6 +76,15 @@ func PingHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(json)
+}
+
+// NotFoundHandler handles 404 Not Found.
+func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
+	// TODO: replace to middleware
+	log.Printf("started %s \"%s\" for %s", r.Method, r.RequestURI, r.RemoteAddr)
+	log.Printf("%v", r.Header)
+
+	http.NotFound(w, r)
 }
 
 // AddContext returns context added handler.

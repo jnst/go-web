@@ -12,7 +12,7 @@ import (
 
 func rpc() {
 	client := &http.Client{Timeout: time.Duration(1) * time.Second}
-	resp, err := client.Post("http://localhost:8080/ping", "text/plain", nil)
+	resp, err := client.Post("http://localhost:8080/rpc", "text/plain", nil)
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
