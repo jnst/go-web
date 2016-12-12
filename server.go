@@ -14,6 +14,10 @@ import (
 
 // RPCHandler handles rpc request.
 func RPCHandler(w http.ResponseWriter, r *http.Request) {
+	// TODO: replace to middleware
+	log.Printf("started %s \"%s\" for %s", r.Method, r.RequestURI, r.RemoteAddr)
+	log.Printf("%v", r.Header)
+
 	if r.Method != "POST" {
 		http.NotFound(w, r)
 		return
@@ -24,6 +28,9 @@ func RPCHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
+
+	// TODO: replace to middleware
+	log.Printf("%v", gachaResp)
 
 	w.Write(data)
 }
