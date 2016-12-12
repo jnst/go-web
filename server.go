@@ -15,7 +15,7 @@ import (
 
 // PingResponse is type of ping response
 type PingResponse struct {
-	Sucess bool
+	Sucess bool `json:"success,omitempty"`
 }
 
 // RPCHandler handles rpc request.
