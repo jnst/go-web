@@ -7,10 +7,13 @@ import (
 	"log"
 	"net/http"
 
+	"fmt"
+
 	stats "github.com/fukata/golang-stats-api-handler"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/golang/protobuf/proto"
 	pb "github.com/jnst/go-web/rpc/gen"
+	redis "gopkg.in/redis.v5"
 )
 
 // PingResponse is type of ping response
@@ -111,6 +114,14 @@ func main() {
 	if db.Ping() != nil {
 		panic(err.Error())
 	}
+
+	client := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "",
+		DB:       0,
+	})
+	pong, err := client.Ping().Result()
+	fmt.Println(pong, err)
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", NotFoundHandler)
