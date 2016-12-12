@@ -10,12 +10,14 @@ import (
 	pb "github.com/jnst/go-web/rpc/gen"
 )
 
-func main() {
+func rpc() {
 	client := &http.Client{Timeout: time.Duration(1) * time.Second}
-	resp, err := client.Post("http://localhost:8080/rpc", "text/plain", nil)
+	resp, err := client.Post("http://localhost:8080/ping", "text/plain", nil)
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
+
+	defer resp.Body.Close()
 
 	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -29,4 +31,18 @@ func main() {
 	}
 
 	log.Println(resp.StatusCode, gachaResp.GetCards()[0].Name)
+}
+
+func ping() {
+	client := &http.Client{Timeout: time.Duration(1) * time.Second}
+	resp, err := client.Post("http://localhost:8080/ping", "text/plain", nil)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+
+	log.Println(resp.StatusCode, resp.Body)
+}
+
+func main() {
+	rpc()
 }

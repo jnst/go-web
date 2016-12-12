@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"log"
 	"net/http"
 
@@ -11,6 +12,11 @@ import (
 	"github.com/golang/protobuf/proto"
 	pb "github.com/jnst/go-web/rpc/gen"
 )
+
+// PingResponse is type of ping response
+type PingResponse struct {
+	Sucess bool
+}
 
 // RPCHandler handles rpc request.
 func RPCHandler(w http.ResponseWriter, r *http.Request) {
@@ -37,6 +43,10 @@ func RPCHandler(w http.ResponseWriter, r *http.Request) {
 
 // NotFoundHandler handles 404 Not Found.
 func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
+	// TODO: replace to middleware
+	log.Printf("started %s \"%s\" for %s", r.Method, r.RequestURI, r.RemoteAddr)
+	log.Printf("%v", r.Header)
+
 	http.NotFound(w, r)
 }
 
@@ -60,6 +70,19 @@ func createResponse() *pb.GachaResponse {
 		Cards: []*pb.Card{c},
 	}
 	return resp
+}
+
+// PingHandler handles ping request.
+func PingHandler(w http.ResponseWriter, r *http.Request) {
+	// TODO: replace to middleware
+	log.Printf("started %s \"%s\" for %s", r.Method, r.RequestURI, r.RemoteAddr)
+	log.Printf("%v", r.Header)
+
+	resp := PingResponse{true}
+	json, _ := json.Marshal(resp)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(json)
 }
 
 // AddContext returns context added handler.
@@ -91,6 +114,7 @@ func main() {
 	mux.HandleFunc("/", NotFoundHandler)
 	mux.HandleFunc("/api/stats", stats.Handler)
 	mux.HandleFunc("/rpc", RPCHandler)
+	mux.HandleFunc("/ping", PingHandler)
 
 	log.Println("Start server on port :8080")
 	log.Fatal(http.ListenAndServe(":8080", mux))
