@@ -30,7 +30,7 @@ func rpc() {
 		log.Fatalln(err.Error())
 	}
 
-	log.Println(resp.StatusCode, gachaResp.GetCards()[0].Name)
+	log.Println(resp.StatusCode, gachaResp.GetCards()[0].GetName())
 }
 
 func ping() {
@@ -40,7 +40,12 @@ func ping() {
 		log.Fatalln(err.Error())
 	}
 
-	log.Println(resp.StatusCode, resp.Body)
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+
+	log.Println(resp.StatusCode, string(b))
 }
 
 func main() {
